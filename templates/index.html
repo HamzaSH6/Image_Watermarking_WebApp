@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Image Watermarking Web App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-slate-950 flex items-center justify-center p-6">
+<div class="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-8">
+    <!--    Header-->
+    <h1 class="text-2xl font-bold text-white mb-2">Upload Image/Watermark</h1>
+    <p class="text-slate-400 mb-6 text-sm">Choose an image and a watermark to continue</p>
+
+    <form method="POST" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+        <!--        Upload Image Section-->
+        <h1 class="text-2xl font-bold text-white mb-2 text-center">1</h1>
+        <div class="border-2 border-slate-400 p-4 rounded-xl">
+            <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-slate-700 rounded-2xl cursor-pointer hover:border-slate-500 transition">
+                <input type="file" name="image" class="hidden" accept="image/*">
+                <span class="text-slate-300 text-lg font-medium">Click to Upload</span>
+                <span class="text-slate-500 text-sm mt-2">PNG, JPG</span>
+            </label>
+            <p class="text-slate-400 text-sm text-center mt-3">OR</p>
+            <input type="url" name="image_url"
+                   class="mt-4 w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                   placeholder="Enter Image URL by copying image address">
+        </div>
+
+        <!--        Upload Watermark Image Section-->
+        <h1 class="mt-10 text-2xl font-bold text-white mb-2 text-center">2</h1>
+        <div class="border-2 border-slate-400 p-4 rounded-xl">
+            <label class="p-4 flex flex-col items-center justify-center w-full h-26 border-2 border-dashed border-slate-700 rounded-2xl cursor-pointer hover:border-slate-500 transition">
+                <input type="file" name="watermark" class="hidden" accept="image/*">
+                <span class="text-slate-300 text-lg font-medium">Upload Watermark</span>
+            </label>
+            <p class="text-slate-400 text-sm text-center mt-3">OR</p>
+            <input type="url" name="watermark_url"
+                   class="mt-4 w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                   placeholder="Enter Watermark Image URL by copying image address">
+        </div>
+
+        <h1 class="mt-10 text-2xl font-bold text-white mb-2 text-center">3</h1>
+        <div class="border-2 border-slate-400 p-4 rounded-xl">
+            <!--            Image Type Extension Select-->
+            <label class="block text-white mb-2">Image Type:</label>
+            <select name="image_type"
+                    class="w-full bg-white border border-gray-300 text-gray-700 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="automatic" selected>Automatic</option>
+                <option value=".jpg">JPG</option>
+                <option value=".png">PNG</option>
+                <option value=".webp">WEBP</option>
+                <option value=".gif">GIF</option>
+            </select>
+
+            <!--        Watermark Transparency Select-->
+            <label class="block text-white mt-4 mb-2">Watermark Transparency:</label>
+            <select name="watermark_transparency"
+                    class="w-full bg-white border border-gray-300 text-gray-700 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <option value="50">Very Light</option>
+                <option value="80">Light</option>
+                <option value="100" selected>Normal (Default)</option>
+                <option value="150">Medium</option>
+                <option value="200">Strong</option>
+                <option value="255">Solid</option>
+            </select>
+        </div>
+
+        <button type="submit"
+                class="w-full mt-6 bg-white text-slate-900 font-semibold py-3 rounded-xl hover:bg-slate-200 transition focus:outline-none focus:ring-2 focus:ring-blue-400">
+            Upload
+        </button>
+    </form>
+</div>
+
+<!--Output Image Part-->
+{% if filename %}
+<div class="ml-4 w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-8">
+    <h1 class="text-2xl font-bold text-white mb-2">Output:</h1>
+    <div class="relative group w-fit">
+        <img src="{{ url_for('uploaded_file', filename=filename) }}" class="mt-4 hover:opacity-50">
+        <a href="{{ url_for('uploaded_file', filename=filename) }}"
+           class="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition"
+           download>
+            <i class="fa-solid fa-download fa-xl text-white"></i>
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!--Flask Flash Message Part-->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="flash fixed top-5 right-5 px-4 py-2 rounded text-white {% if category == 'success' %}bg-green-600{% elif category == 'error' %}bg-red-600{% else %}bg-green-600{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<script>
+    setTimeout(() => {
+      document.querySelectorAll('.flash').forEach(el => {
+        el.remove();
+      });
+    }, 3000);
+</script>
+</body>
+</html>
