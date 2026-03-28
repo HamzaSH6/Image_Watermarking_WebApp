@@ -1,7 +1,7 @@
 ## 🖼️ Image Watermark Web App
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue)
-![Flask](https://img.shields.io/badge/Flask-Web%20App-black)
+![Flask](https://img.shields.io/badge/Flask-Web%20App-green)
 ![Pillow](https://img.shields.io/badge/Pillow-Image%20Processing-orange)
 
 An Image Watermarking Web App that allows users to upload or provide an image URL, upload a watermark or provide watermark URL, and download the
