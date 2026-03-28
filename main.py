@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 # Flask Init
 app = Flask(__name__)
-app.secret_key = "secret_key"
+app.secret_key = "demo_secret_key_123"
 
 # Processed/Output Images Folder
 OUTPUT_FOLDER = Path("processed_image")
